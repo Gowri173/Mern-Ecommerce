@@ -16,6 +16,4 @@ Thumbs.db
 # Build folders
 dist/
 build/
-
-# Optional
 .vscode/

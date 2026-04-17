@@ -2,6 +2,19 @@ const express = require("express")
 const Cart = require("../models/Cart")
 const { protect } = require("../middleware/authMiddleware")
 const router = express.Router()
+router.post("/remove", protect, async (req, res) => {
+    try {
+        const { productId } = req.body
+        let cart = await Cart.findOne({ userId: req.user.id })
+        if (cart) {
+            cart.item = cart.item.filter(item => item.productId.toString() !== productId)
+            await cart.save()
+        }
+        return res.status(200).json({ message: "Item removed from cart" })
+    } catch (err) {
+        return res.status(500).json({ message: `error from cart remove route ${err}` })
+    }
+})
 router.post("/add", protect, async (req, res) => {
     try {
         const { productId } = req.body
@@ -14,7 +27,7 @@ router.post("/add", protect, async (req, res) => {
             console.log("if block", cart)
         } else {
             console.log("from else", cart)
-            const itemIndex = cart.item.find(item => item.productId.toString() == productId)
+            const itemIndex = cart.item.findIndex(item => item.productId.toString() == productId)
             if (itemIndex > -1) {
                 cart.item[itemIndex].quantity += 1
             }

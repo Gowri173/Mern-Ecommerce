@@ -29,6 +29,17 @@ function Cart() {
         }, 0);
     };
 
+    const removeItem = (id) => {
+        API.post("/cart/remove", { productId: id })
+            .then((res) => {
+                if (res.status == 200) {
+                    fetchCart(); // Refresh cart after removal
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     return (
         <div className="container mt-5">
             <h2>Your Cart</h2>
@@ -47,6 +58,7 @@ function Cart() {
                                     <h5>{item.productId.name}</h5>
                                     <p>₹{item.productId.price}</p>
                                     <p>Qty: {item.quantity}</p>
+                                    <button className="btn btn-danger btn-sm" onClick={() => removeItem(item.productId._id)}>Remove</button>
                                 </div>
 
                                 <img

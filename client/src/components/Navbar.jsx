@@ -8,7 +8,6 @@ export default function Navbar() {
     const role = localStorage.getItem("role")
 
     function handleLogout() {
-        alert("Logged out successfully")
         localStorage.removeItem("token")
         localStorage.removeItem("role")
         navigate("/login")

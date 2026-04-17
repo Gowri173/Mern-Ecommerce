@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 
 function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate();
     const role = localStorage.getItem("role")
     useEffect(() => {
         fetchProducts();
@@ -25,17 +28,26 @@ function Home() {
         API.post("/cart/add", { productId: id })
             .then((res) => {
                 if (res.status == 201) {
-                    alert("Added to cart")
-                    navigate("/cart")
+                    setMessage("Added to cart")
+                    setTimeout(() => setMessage(""), 3000)
+                    setTimeout(() => navigate("/cart"), 1000)
                 }
             })
             .catch((err) => {
                 console.log(err)
+                setMessage("Error adding to cart")
+                setTimeout(() => setMessage(""), 3000)
             })
     };
 
     return (
         <div className="container mt-5">
+            {message && (
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    {message}
+                    <button type="button" className="btn-close" onClick={() => setMessage("")}></button>
+                </div>
+            )}
             <h2>Products</h2>
 
             {loading ? (

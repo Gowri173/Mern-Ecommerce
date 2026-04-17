@@ -6,12 +6,12 @@ export default function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
+    const [message, setMessage] = useState("")
     function handleLogin(e) {
         e.preventDefault()
         API.post("/auth/login", { email, password })
             .then((res) => {
                 if (res.status == 200) {
-                    alert("Login successful")
                     localStorage.setItem("token", res.data.token)
                     localStorage.setItem("role", res.data.user.role);
                     navigate("/")
@@ -41,7 +41,7 @@ export default function Login() {
                         <label htmlFor="" className="form-label">Password</label>
                         <input type="password" className="form-control" placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)} />
                     </div>
-                    <button className='btn btn-primary btn-lg'>Login</button>
+                    <button className='btn btn-primary btn-lg' >Login</button>
                 </form>
             </div>
         </div>
